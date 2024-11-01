@@ -38,10 +38,11 @@ def process_image_with_yolo(image: Image.Image):
         for box in boxes:
             class_id = int(box.cls[0])  # 클래스 ID (정수형으로 변환)
             class_name = names[class_id]  # 클래스 이름
-            box_result_list.append({
-                "class_name": class_name,
-                "coordinates": box.xyxy[0].tolist()  # 바운딩 박스 좌표를 리스트로 변환
-            })
+            # box_result_list.append({
+            #     "class_name": class_name,
+            #     "coordinates": box.xyxy[0].tolist()  # 바운딩 박스 좌표를 리스트로 변환
+            # })
+            box_result_list.append(class_name)
 
     # 결과 이미지 시각화
     result_image = results[0].plot()  # 탐지된 이미지 결과를 가져옴
@@ -54,7 +55,8 @@ def process_image_with_yolo(image: Image.Image):
         Bucket=bucket_name,
         Key=image_filename,
         Body=image_buffer.tobytes(),
-        ContentType='image/jpeg'
+        ContentType='image/jpeg',
+        ACL="public-read"
     )
 
     # S3의 이미지 URL 형식

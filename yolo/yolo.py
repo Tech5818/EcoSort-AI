@@ -16,7 +16,7 @@ s3_client = boto3.client('s3',
   region_name=os.getenv("AWS_DEFAULT_REGION")
   )
 
-bucket_name = 'eco-sort-image'
+bucket_name = 'eco-sort'
 
 # YOLO 모델 로드
 model_path = 'yolov8n.pt'  # 모델 파일 경로
@@ -42,7 +42,11 @@ def process_image_with_yolo(image: Image.Image):
             #     "class_name": class_name,
             #     "coordinates": box.xyxy[0].tolist()  # 바운딩 박스 좌표를 리스트로 변환
             # })
-            box_result_list.append(class_name)
+            if class_name == "person":
+                box_result_list.append("cloth")
+            else:
+                box_result_list.append(class_name)
+
 
     # 결과 이미지 시각화
     result_image = results[0].plot()  # 탐지된 이미지 결과를 가져옴

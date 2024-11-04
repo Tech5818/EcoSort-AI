@@ -14,6 +14,7 @@ app.add_middleware(
 
 app.include_router(yolo_router, prefix="/yolo")
 
+
 @app.get("/")
 async def home():
   return "success"
